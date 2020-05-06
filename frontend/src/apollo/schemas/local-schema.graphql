@@ -1,0 +1,55 @@
+directive @client on FIELD_DEFINITION | FIELD
+
+extend type ApiMutation {
+    setTitle(title: String): Title
+    setLoader(input: LoaderInput): Loader
+    setUser(input: UserInput): UserResponse
+}
+
+extend type ApiQuery {
+    title: Title!
+    loader: Loader!
+    user: LocalUser
+}
+
+input LoaderInput {
+    loading: Boolean
+}
+
+input UserInput {
+    id: String
+    email: String
+    mobilePhone: String
+    firstName: String
+    lastName: String
+    patronymic: String
+    birthday: Date
+    dateJoined: DateTime
+    isStaff: Boolean
+    isActive: Boolean
+}
+
+type Loader {
+    isLoading: Boolean
+}
+
+type Title {
+    title: String
+}
+
+type UserResponse {
+    user: LocalUser
+}
+
+type LocalUser {
+    birthday: DateTime
+    dateJoined: DateTime
+    email: String
+    firstName: String
+    id: String
+    isActive: Boolean
+    isStaff: Boolean
+    lastName: String
+    mobilePhone: String
+    patronymic: String
+}

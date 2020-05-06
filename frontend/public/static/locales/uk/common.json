@@ -1,0 +1,72 @@
+{
+  "auth": {
+    "login": "Вхід",
+    "signIn": "Увійти",
+    "signOut": "Вийти",
+    "email": "E-Mail",
+    "password": "Пароль",
+    "repeatPassword": "Повторіть пароль",
+    "smallPassword": "Пароль занадто малий. Має бути не менше 6 символів.",
+    "errors": {
+      "incorrectEmailOrPassword": "Неправильний E-Mail або пароль"
+    },
+    "passwordsNotMatch": "Паролі не збігаються",
+    "unknownUserType": "Невідомий тип користувача",
+    "userNotFound": "Користувач не знайдений"
+  },
+  "languages": {
+    "gb": "English",
+    "ua": "Українська"
+  },
+  "common": {
+    "fieldEmpty": "Це поле не може бути порожнім",
+    "actions": "Дії",
+    "create": "Створити",
+    "unknown": "Невідомий",
+    "edit": "Редагувати",
+    "save": "Зберегти",
+    "selectDate": "Оберіть дату",
+    "select": "Обрати",
+    "cancel": "Скасувати",
+    "incorrectMobilePhone": "Неправильний номер мобільного телефону",
+    "incorrectDate": "Неправильна дата",
+    "notEnoughRights": "У вас недостатньо прав для виконання цього запиту",
+    "alreadyExists": "Користувач з таким E-Mail або мобільним телефоном вже існує",
+    "smtWentWrong": "Щось пішло не так під час обробки вашого запиту"
+  },
+  "table": {
+    "from": "з"
+  },
+  "dashboard": {
+    "dashboard": "Панель інформації"
+  },
+  "dialog": {
+    "confirmContent": "Ви впевнені, що хочете зробити цe?",
+    "yes": "Так",
+    "no": "Ні"
+  },
+  "users": {
+    "users": "Користувачі",
+    "user": "Користувач",
+    "driver": "Водій",
+    "createNewUser": "Створити нового користувача",
+    "name": "ПІБ",
+    "firstName": "Ім'я",
+    "lastName": "Прізвище",
+    "patronymic": "По батькові",
+    "dateJoined": "Дата приєднання",
+    "active": "Активний",
+    "type": "Тип",
+    "information": "Інформація про користувача",
+    "viewFullInformation": "Переглянути інформацію про користувача",
+    "mobilePhone": "Мобільний телефон",
+    "birthday": "День народження",
+    "isStaff": "Користувач адміністратор?",
+    "isActive": "Користувач активний?",
+    "add": "Додати користувача",
+    "deleteUser": "Видалити користувача",
+    "specifyManager": "Будь ласка, вкажить менеджера",
+    "userType": "Тип користувача",
+    "manager": "Менеджер"
+  }
+}

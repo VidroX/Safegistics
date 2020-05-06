@@ -1,0 +1,147 @@
+# Byte-compiled / optimized / DLL files
+**/__pycache__/
+**/*.py[cod]
+**/*$py.class
+
+# C extensions
+**/*.so
+
+# Distribution / packaging
+api/.Python
+api/build/
+api/develop-eggs/
+api/dist/
+api/downloads/
+api/eggs/
+api/.eggs/
+api/lib/
+api/lib64/
+api/parts/
+api/sdist/
+api/var/
+api/wheels/
+api/*.egg-info/
+api/.installed.cfg
+api/*.egg
+api/MANIFEST
+
+# PyInstaller
+#  Usually these files are written by a python script from a template
+#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+api/*.manifest
+api/*.spec
+
+# Installer logs
+api/**/pip-log.txt
+api/**/pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+api/htmlcov/
+api/.tox/
+api/.coverage
+api/.coverage.*
+api/.cache
+api/nosetests.xml
+api/coverage.xml
+api/*.cover
+api/.hypothesis/
+api/.pytest_cache/
+
+# Translations
+api/*.mo
+api/*.pot
+
+# Django stuff:
+api/*.log
+api/local_settings.py
+api/db.sqlite3
+
+# Flask stuff:
+api/instance/
+api/.webassets-cache
+
+# Scrapy stuff:
+api/.scrapy
+
+# Sphinx documentation
+api/docs/_build/
+
+# PyBuilder
+api/target/
+
+# Jupyter Notebook
+api/.ipynb_checkpoints
+
+# pyenv
+api/.python-version
+
+# celery beat schedule file
+api/celerybeat-schedule
+
+# SageMath parsed files
+api/*.sage.py
+
+# Environments
+.env
+.db.env
+.prod.env
+.db.prod.env
+.venv
+api/**/.env
+api/**/.venv
+env/
+api/env/
+venv/
+api/venv/
+ENV/
+api/ENV/
+env.bak/
+api/env.bak/
+venv.bak/
+api/venv.bak/
+
+# Spyder project settings
+api/.spyderproject
+api/.spyproject
+
+# Rope project settings
+api/.ropeproject
+
+# mkdocs documentation
+**/site
+
+# mypy
+api/.mypy_cache/
+
+**/.idea/
+api/**/migrations/*
+!api/**/migrations/0001_initial.py
+!api/**/migrations/__init__.py
+
+# React
+frontend/yarn.lock
+
+# dependencies
+frontend/node_modules
+frontend/build
+frontend/.pnp
+frontend/.pnp.js
+
+# testing
+frontend/coverage
+
+# misc
+frontend/.DS_Store
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local
+
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+
+certs
+
+iot/user.json
+iot/**/__pycache__

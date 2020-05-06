@@ -1,0 +1,15 @@
+{
+  "name": "Default Schema",
+  "schemaPath": "schema-client.graphql",
+  "extensions": {
+    "endpoints": {
+      "Remote GraphQL Endpoint": {
+        "url": "http://192.168.1.62:5000/graphql",
+        "headers": {
+          "user-agent": "JS GraphQL"
+        },
+        "introspect": true
+      }
+    }
+  }
+}

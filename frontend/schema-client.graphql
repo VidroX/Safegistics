@@ -1,0 +1,293 @@
+# This file was generated based on ".graphqlconfig". Do not edit manually.
+
+schema {
+    query: ApiQuery
+    mutation: ApiMutation
+}
+
+"An object with an ID"
+interface Node {
+    "The ID of the object."
+    id: ID!
+}
+
+type AddWarning {
+    result: String
+    warning: WarningGraphModel
+}
+
+type ApiMutation {
+    addWarning(warningData: AddWarningInputData!): AddWarning
+    deleteUser(userId: ID!): DeleteUser
+    deviceLogin(loginData: DeviceLoginInputData!): DeviceLogin
+    deviceRegister(registerData: DeviceRegisterInputData!): DeviceRegister
+    login(loginData: LoginInputData!): Login
+    register(registerData: RegisterInputData!): Register
+    removeDevice(deviceId: String!): RemoveDevice
+    updateUser(userData: UserUpdateInputData!, userUpdateId: ID): UpdateUser
+}
+
+type ApiQuery {
+    allUsers(Cls: String, after: String, before: String, birthday: DateTime, dateJoined: DateTime, email: String, first: Int, firstName: String, id: ID, isActive: Boolean, last: Int, lastName: String, mobilePhone: String, orderBy: String, patronymic: String, search: String, userId: ID): BaseUserConnection
+    currentUser(Cls: String, after: String, before: String, birthday: DateTime, dateJoined: DateTime, email: String, first: Int, firstName: String, id: ID, isActive: Boolean, last: Int, lastName: String, mobilePhone: String, patronymic: String): BaseUserConnection
+    devices(after: String, before: String, deviceId: String, driver: ID, first: Int, id: ID, last: Int, name: String): DeviceConnection
+    drivers(Cls: String, after: String, before: String, birthday: DateTime, dateJoined: DateTime, email: String, first: Int, firstName: String, id: ID, isActive: Boolean, last: Int, lastName: String, manager: ID, mobilePhone: String, patronymic: String): DriverConnection
+    "The ID of the object"
+    node(id: ID!): Node
+    users(Cls: String, after: String, before: String, birthday: DateTime, dateJoined: DateTime, email: String, first: Int, firstName: String, id: ID, isActive: Boolean, isStaff: Boolean, last: Int, lastName: String, mobilePhone: String, patronymic: String): UserConnection
+    warnings(after: String, before: String, dateIssued: DateTime, device: ID, deviceId: ID, first: Int, id: ID, last: Int, orderBy: String, type: String): WarningGraphModelConnection
+}
+
+type BaseUser implements Node {
+    Cls: String
+    birthday: DateTime!
+    dateJoined: DateTime
+    email: String
+    firstName: String!
+    "The ID of the object."
+    id: ID!
+    isActive: Boolean
+    isStaff: Boolean
+    lastName: String!
+    manager: User
+    mobilePhone: String!
+    patronymic: String
+}
+
+type BaseUserConnection {
+    "Contains the nodes in this connection."
+    edges: [BaseUserEdge]!
+    "Pagination data for this connection."
+    pageInfo: PageInfo!
+    totalCount: Int
+}
+
+"A Relay edge containing a `BaseUser` and its cursor."
+type BaseUserEdge {
+    "A cursor for use in pagination"
+    cursor: String!
+    "The item at the end of the edge"
+    node: BaseUser
+}
+
+type DeleteUser {
+    result: String
+}
+
+type Device implements Node {
+    deviceId: String!
+    driver: Driver
+    "The ID of the object."
+    id: ID!
+    name: String!
+}
+
+type DeviceConnection {
+    "Contains the nodes in this connection."
+    edges: [DeviceEdge]!
+    "Pagination data for this connection."
+    pageInfo: PageInfo!
+    totalCount: Int
+}
+
+"A Relay edge containing a `Device` and its cursor."
+type DeviceEdge {
+    "A cursor for use in pagination"
+    cursor: String!
+    "The item at the end of the edge"
+    node: Device
+}
+
+type DeviceLogin {
+    device: Device
+    token: TokenData
+}
+
+type DeviceRegister {
+    device: Device
+    token: TokenData
+}
+
+type Driver implements Node {
+    Cls: String
+    birthday: DateTime!
+    dateJoined: DateTime
+    email: String
+    firstName: String!
+    "The ID of the object."
+    id: ID!
+    isActive: Boolean
+    lastName: String!
+    manager: User
+    mobilePhone: String!
+    patronymic: String
+}
+
+type DriverConnection {
+    "Contains the nodes in this connection."
+    edges: [DriverEdge]!
+    "Pagination data for this connection."
+    pageInfo: PageInfo!
+    totalCount: Int
+}
+
+"A Relay edge containing a `Driver` and its cursor."
+type DriverEdge {
+    "A cursor for use in pagination"
+    cursor: String!
+    "The item at the end of the edge"
+    node: Driver
+}
+
+type Login {
+    token: TokenData
+    user: BaseUser
+}
+
+"The Relay compliant `PageInfo` type, containing data necessary to paginate this connection."
+type PageInfo {
+    "When paginating forwards, the cursor to continue."
+    endCursor: String
+    "When paginating forwards, are there more items?"
+    hasNextPage: Boolean!
+    "When paginating backwards, are there more items?"
+    hasPreviousPage: Boolean!
+    "When paginating backwards, the cursor to continue."
+    startCursor: String
+}
+
+type Register {
+    token: TokenData
+    user: BaseUser
+}
+
+type RemoveDevice {
+    result: String
+}
+
+type TokenData {
+    accessToken: String
+    refreshToken: String
+}
+
+type UpdateUser {
+    token: TokenData
+    user: BaseUser
+}
+
+type User implements Node {
+    Cls: String
+    birthday: DateTime!
+    dateJoined: DateTime
+    email: String
+    firstName: String!
+    "The ID of the object."
+    id: ID!
+    isActive: Boolean
+    isStaff: Boolean!
+    lastName: String!
+    mobilePhone: String!
+    patronymic: String
+}
+
+type UserConnection {
+    "Contains the nodes in this connection."
+    edges: [UserEdge]!
+    "Pagination data for this connection."
+    pageInfo: PageInfo!
+    totalCount: Int
+}
+
+"A Relay edge containing a `User` and its cursor."
+type UserEdge {
+    "A cursor for use in pagination"
+    cursor: String!
+    "The item at the end of the edge"
+    node: User
+}
+
+type WarningGraphModel implements Node {
+    dateIssued: DateTime
+    device: Device
+    "The ID of the object."
+    id: ID!
+    type: String!
+}
+
+type WarningGraphModelConnection {
+    "Contains the nodes in this connection."
+    edges: [WarningGraphModelEdge]!
+    "Pagination data for this connection."
+    pageInfo: PageInfo!
+    totalCount: Int
+}
+
+"A Relay edge containing a `WarningGraphModel` and its cursor."
+type WarningGraphModelEdge {
+    "A cursor for use in pagination"
+    cursor: String!
+    "The item at the end of the edge"
+    node: WarningGraphModel
+}
+
+input AddWarningInputData {
+    device: ID
+    type: String!
+}
+
+input DeviceLoginInputData {
+    deviceId: String!
+    devicePass: String!
+}
+
+input DeviceRegisterInputData {
+    deviceId: String!
+    devicePass: String!
+    driver: ID
+    name: String!
+}
+
+input LoginInputData {
+    email: String!
+    password: String!
+}
+
+input RegisterInputData {
+    birthday: Date!
+    email: String!
+    firstName: String!
+    lastName: String!
+    manager: ID
+    mobilePhone: String!
+    password: String!
+    patronymic: String
+    type: String
+}
+
+input UserUpdateInputData {
+    birthday: Date
+    email: String
+    firstName: String
+    isActive: Boolean
+    isStaff: Boolean
+    lastName: String
+    mobilePhone: String
+    password: String
+    patronymic: String
+    type: String
+}
+
+
+"""
+The `DateTime` scalar type represents a DateTime
+value as specified by
+[iso8601](https://en.wikipedia.org/wiki/ISO_8601).
+"""
+scalar DateTime
+
+"""
+The `Date` scalar type represents a Date
+value as specified by
+[iso8601](https://en.wikipedia.org/wiki/ISO_8601).
+"""
+scalar Date

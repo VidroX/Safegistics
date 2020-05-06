@@ -1,0 +1,8 @@
+{
+  "error": "Error",
+  "descriptions": {
+    "general": "An unknown error has been encountered",
+    "404": "Page not found",
+    "405": "You don't have enough rights to view this page"
+  }
+}

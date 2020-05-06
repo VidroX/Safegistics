@@ -1,0 +1,72 @@
+{
+  "auth": {
+    "login": "Log In",
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "email": "E-Mail",
+    "password": "Password",
+    "repeatPassword": "Repeat password",
+    "smallPassword": "Password is too small. Should be minimum 6 characters long.",
+    "errors": {
+      "incorrectEmailOrPassword": "Incorrect E-Mail or Password"
+    },
+    "passwordsNotMatch": "Passwords don't match",
+    "unknownUserType": "Unknown user type",
+    "userNotFound": "User not found"
+  },
+  "languages": {
+    "gb": "English",
+    "ua": "Українська"
+  },
+  "common": {
+    "fieldEmpty": "This field cannot be empty",
+    "create": "Create",
+    "actions": "Actions",
+    "unknown": "Unknown",
+    "edit": "Edit",
+    "save": "Save",
+    "selectDate": "Select date",
+    "select": "Select",
+    "cancel": "Cancel",
+    "incorrectMobilePhone": "Incorrect mobile phone",
+    "incorrectDate": "Incorrect date",
+    "notEnoughRights": "You don't have enough rights to perform this request",
+    "alreadyExists": "User with such email or mobile phone already exists",
+    "smtWentWrong": "Something went wrong, while processing your request"
+  },
+  "table": {
+    "from": "from"
+  },
+  "dashboard": {
+    "dashboard": "Dashboard"
+  },
+  "dialog": {
+    "confirmContent": "Are you sure you want to do this action?",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "users": {
+    "users": "Users",
+    "user": "User",
+    "createNewUser": "Create new user",
+    "driver": "Driver",
+    "name": "Full Name",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "patronymic": "Patronymic",
+    "dateJoined": "Date joined",
+    "active": "Active",
+    "type": "Type",
+    "information": "User information",
+    "viewFullInformation": "View user information",
+    "mobilePhone": "Mobile phone",
+    "birthday": "Birthday",
+    "isStaff": "Is user Admin?",
+    "isActive": "Is user Active?",
+    "add": "Add user",
+    "deleteUser": "Delete user",
+    "specifyManager": "Please, specify manager",
+    "userType": "User type",
+    "manager": "Manager"
+  }
+}
