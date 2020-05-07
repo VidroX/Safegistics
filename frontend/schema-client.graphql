@@ -30,11 +30,11 @@ type ApiMutation {
 type ApiQuery {
     allUsers(Cls: String, after: String, before: String, birthday: DateTime, dateJoined: DateTime, email: String, first: Int, firstName: String, id: ID, isActive: Boolean, last: Int, lastName: String, mobilePhone: String, orderBy: String, patronymic: String, search: String, userId: ID): BaseUserConnection
     currentUser(Cls: String, after: String, before: String, birthday: DateTime, dateJoined: DateTime, email: String, first: Int, firstName: String, id: ID, isActive: Boolean, last: Int, lastName: String, mobilePhone: String, patronymic: String): BaseUserConnection
-    devices(after: String, before: String, deviceId: String, driver: ID, first: Int, id: ID, last: Int, name: String): DeviceConnection
-    drivers(Cls: String, after: String, before: String, birthday: DateTime, dateJoined: DateTime, email: String, first: Int, firstName: String, id: ID, isActive: Boolean, last: Int, lastName: String, manager: ID, mobilePhone: String, patronymic: String): DriverConnection
+    devices(after: String, before: String, deviceId: String, driver: ID, first: Int, id: ID, last: Int, name: String, userId: ID): DeviceConnection
+    drivers(Cls: String, after: String, before: String, birthday: DateTime, dateJoined: DateTime, email: String, first: Int, firstName: String, id: ID, isActive: Boolean, last: Int, lastName: String, manager: ID, mobilePhone: String, orderBy: String, patronymic: String, search: String, userId: ID): DriverConnection
     "The ID of the object"
     node(id: ID!): Node
-    users(Cls: String, after: String, before: String, birthday: DateTime, dateJoined: DateTime, email: String, first: Int, firstName: String, id: ID, isActive: Boolean, isStaff: Boolean, last: Int, lastName: String, mobilePhone: String, patronymic: String): UserConnection
+    users(Cls: String, after: String, before: String, birthday: DateTime, dateJoined: DateTime, email: String, first: Int, firstName: String, id: ID, isActive: Boolean, isStaff: Boolean, last: Int, lastName: String, mobilePhone: String, orderBy: String, patronymic: String, search: String, userId: ID): UserConnection
     warnings(after: String, before: String, dateIssued: DateTime, device: ID, deviceId: ID, first: Int, id: ID, last: Int, orderBy: String, type: String): WarningGraphModelConnection
 }
 
@@ -271,6 +271,7 @@ input UserUpdateInputData {
     isActive: Boolean
     isStaff: Boolean
     lastName: String
+    manager: ID
     mobilePhone: String
     password: String
     patronymic: String

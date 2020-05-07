@@ -1,6 +1,6 @@
 import * as React from "react";
 import {LinearProgress} from "@material-ui/core";
-import {makeStyles} from "@material-ui/core/styles";
+import { makeStyles } from '@material-ui/core/styles';
 import useLoader from "../hooks/useLoader";
 import Router from "next/router";
 

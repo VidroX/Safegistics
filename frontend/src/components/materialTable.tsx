@@ -8,7 +8,7 @@ import {
     TableHead, TablePagination,
     TableRow
 } from "@material-ui/core";
-import {makeStyles} from "@material-ui/core/styles";
+import { makeStyles } from '@material-ui/core/styles';
 import {HeaderData, MaterialTableProps, SortItem} from "../interfaces/materialTable";
 import MenuList from "./menuList";
 import {config} from "../../config";

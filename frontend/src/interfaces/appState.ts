@@ -15,8 +15,9 @@ export interface User {
     patronymic: string;
     birthday: string;
     dateJoined: string;
-    isStaff: boolean;
+    isStaff?: boolean;
     isActive: boolean;
+    manager?: User | null;
     type?: string;
 }
 

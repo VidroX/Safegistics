@@ -17,6 +17,12 @@ const theme = createMuiTheme({
         },
     },
     overrides: {
+        MuiGrid: {
+            container: {
+                maxWidth: 760,
+                margin: '0 auto'
+            }
+        },
         MuiButton: {
             textPrimary: {
                 color: '#e36374'

@@ -1,5 +1,6 @@
 import React from "react";
-import {Button, IconButton, makeStyles, Menu, MenuItem} from "@material-ui/core";
+import {Button, IconButton, Menu, MenuItem} from "@material-ui/core";
+import { makeStyles } from '@material-ui/core/styles';
 import { useTranslation } from "../i18n";
 import FlagIcon from "./flagIcon";
 

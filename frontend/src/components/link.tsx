@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { LinkProps as NextLinkProps } from 'next/link';
 import { Link as NextLink } from "../i18n";
 import MuiLink, { LinkProps as MuiLinkProps } from '@material-ui/core/Link';
-import {makeStyles} from "@material-ui/core/styles";
+import { makeStyles } from '@material-ui/core/styles';
 
 interface CustomLinkProps {
     noDecoration?: boolean;

@@ -2,7 +2,7 @@ import * as React from "react";
 import useTitle from "../../../../hooks/useTitle";
 import {useTranslation} from "../../../../i18n";
 import useUser from "../../../../hooks/useUser";
-import {canServerAdminOpenLink} from "../../../../utils/userUtils";
+import {canServerAdminOpenLink, getParsedUserType, UserTypes} from "../../../../utils/userUtils";
 import {NextPage, NextPageContext} from "next";
 import {config} from "../../../../../config";
 import Cookies from "universal-cookie";
@@ -10,8 +10,9 @@ import jwt from "jsonwebtoken";
 import {UserData, UserPayload} from "../../../../interfaces/user";
 import Error from "../../../_error";
 import {useMutation, useQuery} from "@apollo/react-hooks";
-import {GET_USERS, UPDATE_USER, USER_LOGIN} from "../../../../apollo/queries/user";
-import {Checkbox, FormControlLabel, makeStyles, Paper, TextField, Typography} from "@material-ui/core";
+import {GET_USERS, UPDATE_USER} from "../../../../apollo/queries/user";
+import {Checkbox, FormControlLabel, Paper, TextField, Typography} from "@material-ui/core";
+import { makeStyles } from '@material-ui/core/styles';
 import {Skeleton} from "@material-ui/lab";
 import {useContext} from "react";
 import TopNav from "../../../../contexts/TopNav";
@@ -23,6 +24,8 @@ import {subYears, format} from "date-fns";
 import {GraphQLError} from "graphql";
 import {BsFillCalendarFill} from "react-icons/bs";
 import theme from "../../../../theme";
+import ManagerSearcher from "../../../../components/searchers/managerSearcher";
+import { TopNav as ITopNav } from "../../../../interfaces/topNav";
 
 interface UserEditProps {
     error?: boolean;
@@ -42,6 +45,7 @@ interface UpdateVariables {
     type?: string;
     isStaff?: boolean;
     isActive?: boolean;
+    manager?: string | null;
 }
 
 interface UpdateState {
@@ -102,6 +106,14 @@ const UserEdit: NextPage<UserEditProps> = (props) => {
     });
     const encodedMobilePhone = JSON.stringify(mobilePhone);
 
+    const [manager, setManager] = React.useState({
+        error: false,
+        errorText: "",
+        value: "",
+        id: ""
+    });
+    const encodedManager = JSON.stringify(manager);
+
     const [isUserAdmin, setUserAdmin] = React.useState(false);
     const [isActive, setActive] = React.useState(false);
 
@@ -114,6 +126,7 @@ const UserEdit: NextPage<UserEditProps> = (props) => {
             userId: slug
         }
     });
+
     const [
         updateUser,
         {
@@ -124,12 +137,8 @@ const UserEdit: NextPage<UserEditProps> = (props) => {
     ] = useMutation<UpdateState, UpdateVariables>(UPDATE_USER);
 
     React.useEffect(() => {
-        setCurrentTopNav({
+        let topNav: ITopNav = {
             breadcrumbs: [
-                {
-                    name: t('users.users'),
-                    url: '/users',
-                },
                 {
                     name: data != null ?
                         data.allUsers.edges[0].node.firstName + ' ' +
@@ -152,9 +161,43 @@ const UserEdit: NextPage<UserEditProps> = (props) => {
                     onPress: handleSavePress
                 }
             ]
-        });
+        };
+
+        if (currentUser?.isStaff) {
+            topNav = {
+                breadcrumbs: [
+                    {
+                        name: t('users.users'),
+                        url: '/users',
+                    },
+                    {
+                        name: data != null ?
+                            data.allUsers.edges[0].node.firstName + ' ' +
+                            data.allUsers.edges[0].node.lastName + ' ' +
+                            data.allUsers.edges[0].node.patronymic :
+                            t('users.information'),
+                        url: '/users/' + slug + '/',
+                    },
+                    {
+                        name: t('common.edit'),
+                        url: '/users/' + slug + '/edit',
+                    }
+                ],
+                buttons: [
+                    {
+                        type: 'IconButton',
+                        icon: 'MdSave',
+                        loading: updateLoading,
+                        text: t('common.save'),
+                        onPress: handleSavePress
+                    }
+                ]
+            };
+        }
+
+        setCurrentTopNav(topNav);
     }, [loading, error, slug, updateLoading, isActive, isUserAdmin, encodedBirthday, encodedEmailField,
-        encodedFirstName, encodedLastName, encodedMobilePhone, encodedPatronymic]);
+        encodedFirstName, encodedLastName, encodedMobilePhone, encodedPatronymic, encodedManager, currentUser]);
 
     const isStaffChecked = Boolean(isUserAdmin);
     const isActiveChecked = Boolean(isActive);
@@ -162,6 +205,7 @@ const UserEdit: NextPage<UserEditProps> = (props) => {
     useTitle(t("users.information"));
 
     const queriedUser = data?.allUsers.edges[0].node;
+    const userType = queriedUser != null && queriedUser.type != null ? getParsedUserType(queriedUser.type) : null;
 
     React.useEffect(() => {
         if (!updateLoading && !updateError && updateData != null) {
@@ -172,13 +216,6 @@ const UserEdit: NextPage<UserEditProps> = (props) => {
                 try {
                     const decodedSession = jwt.decode(token);
                     const sessionUser = (decodedSession as any).identity as UserPayload;
-
-                    const url = {
-                        pathname: '/users/[slug]',
-                        query: {
-                            slug
-                        },
-                    };
 
                     if (sessionUser != null && currentUser?.id === queriedUser?.id) {
                         new Cookies().set(config.general.sessionCookie, token, {
@@ -227,8 +264,19 @@ const UserEdit: NextPage<UserEditProps> = (props) => {
                 value: queriedUser.mobilePhone.replace(/[_()\-\s]/gi, ''),
                 clearValue: queriedUser.mobilePhone
             });
+
+            if (currentUser?.isStaff && queriedUser.manager != null) {
+                setManager({
+                    error: false,
+                    errorText: "",
+                    value: queriedUser.manager.firstName + ' ' +
+                        queriedUser.manager.lastName + ' ' +
+                        queriedUser.manager.patronymic,
+                    id: queriedUser.manager.id
+                });
+            }
             setActive(queriedUser.isActive);
-            setUserAdmin(queriedUser.isStaff);
+            setUserAdmin(queriedUser.isStaff != null ? queriedUser.isStaff : false);
         }
     }, [queriedUser]);
 
@@ -315,6 +363,10 @@ const UserEdit: NextPage<UserEditProps> = (props) => {
                             birthday: format(birthday.value, 'yyyy-MM-dd'),
                             isActive: isActiveChecked
                         };
+
+                        if (userType === UserTypes.DRIVER && manager.id.length > 0) {
+                            userUpdateVariables.manager = manager.id;
+                        }
                     }
                 }
 
@@ -358,7 +410,12 @@ const UserEdit: NextPage<UserEditProps> = (props) => {
         patronymic.value.length > 0 &&
         birthday.value != null &&
         emailField.value.length > 0 &&
-        mobilePhone.value.length === 13;
+        mobilePhone.value.length === 13 &&
+        (
+            (userType === UserTypes.DRIVER && currentUser?.isStaff == true && manager.id.length > 0) ||
+            (userType === UserTypes.DRIVER && (currentUser?.isStaff == false || currentUser?.isStaff == null)) ||
+            (userType !== UserTypes.DRIVER)
+        );
 
     const clearErrors = () => {
         setFirstName({
@@ -391,6 +448,12 @@ const UserEdit: NextPage<UserEditProps> = (props) => {
             errorText: "",
             value: mobilePhone.value,
             clearValue: mobilePhone.clearValue
+        });
+        setManager({
+            error: false,
+            errorText: "",
+            value: manager.value,
+            id: manager.id
         });
     };
 
@@ -438,12 +501,51 @@ const UserEdit: NextPage<UserEditProps> = (props) => {
                 clearValue: mobilePhone.clearValue
             });
         }
+        if (currentUser?.isStaff && userType === UserTypes.DRIVER) {
+            if (manager.id.length <= 0) {
+                setManager({
+                    error: true,
+                    errorText: t('common.fieldEmpty'),
+                    value: manager.value,
+                    id: manager.id
+                });
+            }
+        }
     };
 
     const renderAdminPart = () => {
         if (currentUser?.isStaff) {
             return (
                 <>
+                    {userType === UserTypes.DRIVER && <div className={classes.infoBlock}>
+                        <ManagerSearcher
+                            className={classes.textField}
+                            required={userType === UserTypes.DRIVER}
+                            error={manager.error}
+                            defaultValue={{
+                                id: manager.id,
+                                label: manager.value
+                            }}
+                            helperText={manager.errorText}
+                            onSelect={value => {
+                                if (value != null) {
+                                    setManager({
+                                        error: false,
+                                        errorText: "",
+                                        value: value.label,
+                                        id: value.id
+                                    });
+                                } else {
+                                    setManager({
+                                        error: false,
+                                        errorText: "",
+                                        value: "",
+                                        id: ""
+                                    });
+                                }
+                            }}
+                        />
+                    </div> }
                     { queriedUser?.isStaff != null && <div className={classes.infoBlock}>
                         <FormControlLabel
                             control={
@@ -478,155 +580,157 @@ const UserEdit: NextPage<UserEditProps> = (props) => {
     };
 
     return (
-        <Paper className={classes.contentWrapper}>
-            <div className={classes.infoBlock}>
-                <TextField
-                    classes={{
-                        root: classes.textField
-                    }}
-                    label={t('users.firstName')}
-                    variant="outlined"
-                    value={firstName.value}
-                    required
-                    color="secondary"
-                    error={firstName.error}
-                    helperText={firstName.errorText}
-                    onChange={(e) => {
-                        setFirstName({
-                            error: false,
-                            errorText: "",
-                            value: e.target.value
-                        });
-                    }}
-                />
-            </div>
-            <div className={classes.infoBlock}>
-                <TextField
-                    classes={{
-                        root: classes.textField
-                    }}
-                    label={t('users.lastName')}
-                    variant="outlined"
-                    value={lastName.value}
-                    required
-                    color="secondary"
-                    error={lastName.error}
-                    helperText={lastName.errorText}
-                    onChange={(e) => {
-                        setLastName({
-                            error: false,
-                            errorText: "",
-                            value: e.target.value
-                        });
-                    }}
-                />
-            </div>
-            <div className={classes.infoBlock}>
-                <TextField
-                    classes={{
-                        root: classes.textField
-                    }}
-                    label={t('users.patronymic')}
-                    variant="outlined"
-                    value={patronymic.value}
-                    required
-                    color="secondary"
-                    error={patronymic.error}
-                    helperText={patronymic.errorText}
-                    onChange={(e) => {
-                        setPatronymic({
-                            error: false,
-                            errorText: "",
-                            value: e.target.value
-                        });
-                    }}
-                />
-            </div>
-            <div className={classes.infoBlock}>
-                <TextField
-                    classes={{
-                        root: classes.textField
-                    }}
-                    label={t('auth.email')}
-                    variant="outlined"
-                    value={emailField.value}
-                    required
-                    color="secondary"
-                    error={emailField.error}
-                    helperText={emailField.errorText}
-                    onChange={(e) => {
-                        setEmailField({
-                            error: false,
-                            errorText: "",
-                            value: e.target.value
-                        });
-                    }}
-                />
-            </div>
-            <div className={classes.infoBlock}>
-                <TextField
-                    classes={{
-                        root: classes.textField
-                    }}
-                    label={t('users.mobilePhone')}
-                    variant="outlined"
-                    value={mobilePhone.value}
-                    required
-                    color="secondary"
-                    error={mobilePhone.error}
-                    helperText={mobilePhone.errorText}
-                    onChange={(e) => {
-                        setMobilePhone({
-                            error: false,
-                            errorText: "",
-                            value: e.target.value.replace(/[_()\-\s]/gi, ''),
-                            clearValue: e.target.value
-                        });
-                    }}
-                    InputProps={{
-                        inputComponent: PhoneMask as any,
-                    }}
-                />
-            </div>
-            <div className={classes.infoBlock}>
-                <KeyboardDatePicker
-                    className={classes.textField}
-                    label={t('users.birthday')}
-                    format={'P'}
-                    variant="dialog"
-                    inputVariant="outlined"
-                    required
-                    color="secondary"
-                    cancelLabel={t('common.cancel')}
-                    okLabel={t('common.select')}
-                    maxDate={new Date()}
-                    minDate={subYears(new Date(), 130)}
-                    value={new Date(birthday.value)}
-                    error={birthday.error}
-                    helperText={birthday.errorText}
-                    keyboardIcon={<BsFillCalendarFill aria-label="Select Date" color={theme.palette.secondary.light} />}
-                    onChange={(date: MaterialUiPickersDate | null) => {
-                        try {
-                            setBirthday({
+        <>
+            <Paper className={classes.contentWrapper}>
+                <div className={classes.infoBlock}>
+                    <TextField
+                        classes={{
+                            root: classes.textField
+                        }}
+                        label={t('users.firstName')}
+                        variant="outlined"
+                        value={firstName.value}
+                        required
+                        color="secondary"
+                        error={firstName.error}
+                        helperText={firstName.errorText}
+                        onChange={(e) => {
+                            setFirstName({
                                 error: false,
                                 errorText: "",
-                                value: date != null ? new Date(date) : new Date()
+                                value: e.target.value
                             });
-                        } catch (e) {
-                            setBirthday({
+                        }}
+                    />
+                </div>
+                <div className={classes.infoBlock}>
+                    <TextField
+                        classes={{
+                            root: classes.textField
+                        }}
+                        label={t('users.lastName')}
+                        variant="outlined"
+                        value={lastName.value}
+                        required
+                        color="secondary"
+                        error={lastName.error}
+                        helperText={lastName.errorText}
+                        onChange={(e) => {
+                            setLastName({
                                 error: false,
                                 errorText: "",
-                                value: new Date(birthday.value)
+                                value: e.target.value
                             });
-                        }
-                    }}
-                    KeyboardButtonProps={{
-                        'aria-label': t('common.selectDate'),
-                    }}
-                />
-            </div>
-            { renderAdminPart() }
-        </Paper>
+                        }}
+                    />
+                </div>
+                <div className={classes.infoBlock}>
+                    <TextField
+                        classes={{
+                            root: classes.textField
+                        }}
+                        label={t('users.patronymic')}
+                        variant="outlined"
+                        value={patronymic.value}
+                        required
+                        color="secondary"
+                        error={patronymic.error}
+                        helperText={patronymic.errorText}
+                        onChange={(e) => {
+                            setPatronymic({
+                                error: false,
+                                errorText: "",
+                                value: e.target.value
+                            });
+                        }}
+                    />
+                </div>
+                <div className={classes.infoBlock}>
+                    <TextField
+                        classes={{
+                            root: classes.textField
+                        }}
+                        label={t('auth.email')}
+                        variant="outlined"
+                        value={emailField.value}
+                        required
+                        color="secondary"
+                        error={emailField.error}
+                        helperText={emailField.errorText}
+                        onChange={(e) => {
+                            setEmailField({
+                                error: false,
+                                errorText: "",
+                                value: e.target.value
+                            });
+                        }}
+                    />
+                </div>
+                <div className={classes.infoBlock}>
+                    <TextField
+                        classes={{
+                            root: classes.textField
+                        }}
+                        label={t('users.mobilePhone')}
+                        variant="outlined"
+                        value={mobilePhone.value}
+                        required
+                        color="secondary"
+                        error={mobilePhone.error}
+                        helperText={mobilePhone.errorText}
+                        onChange={(e) => {
+                            setMobilePhone({
+                                error: false,
+                                errorText: "",
+                                value: e.target.value.replace(/[_()\-\s]/gi, ''),
+                                clearValue: e.target.value
+                            });
+                        }}
+                        InputProps={{
+                            inputComponent: PhoneMask as any,
+                        }}
+                    />
+                </div>
+                <div className={classes.infoBlock}>
+                    <KeyboardDatePicker
+                        className={classes.textField}
+                        label={t('users.birthday')}
+                        format={'P'}
+                        variant="dialog"
+                        inputVariant="outlined"
+                        required
+                        color="secondary"
+                        cancelLabel={t('common.cancel')}
+                        okLabel={t('common.select')}
+                        maxDate={new Date()}
+                        minDate={subYears(new Date(), 130)}
+                        value={new Date(birthday.value)}
+                        error={birthday.error}
+                        helperText={birthday.errorText}
+                        keyboardIcon={<BsFillCalendarFill aria-label="Select Date" color={theme.palette.secondary.light} />}
+                        onChange={(date: MaterialUiPickersDate | null) => {
+                            try {
+                                setBirthday({
+                                    error: false,
+                                    errorText: "",
+                                    value: date != null ? new Date(date) : new Date()
+                                });
+                            } catch (e) {
+                                setBirthday({
+                                    error: false,
+                                    errorText: "",
+                                    value: new Date(birthday.value)
+                                });
+                            }
+                        }}
+                        KeyboardButtonProps={{
+                            'aria-label': t('common.selectDate'),
+                        }}
+                    />
+                </div>
+                { renderAdminPart() }
+            </Paper>
+        </>
     );
 };
 
@@ -635,6 +739,9 @@ const useStyles = makeStyles(theme => ({
         padding: 12,
         flexDirection: 'column'
     },
+    defMarginTop: {
+        marginTop: 16
+    },
     infoBlock: {
         "&:not(:last-child)": {
             marginBottom: 12
@@ -642,6 +749,10 @@ const useStyles = makeStyles(theme => ({
     },
     textField: {
         width: '100%'
+    },
+    header: {
+        marginTop: 16,
+        marginBottom: 16
     }
 }));
 

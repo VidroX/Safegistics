@@ -32,13 +32,17 @@
     "incorrectDate": "Incorrect date",
     "notEnoughRights": "You don't have enough rights to perform this request",
     "alreadyExists": "User with such email or mobile phone already exists",
-    "smtWentWrong": "Something went wrong, while processing your request"
+    "smtWentWrong": "Something went wrong, while processing your request",
+    "register": "Register"
   },
   "table": {
     "from": "from"
   },
   "dashboard": {
-    "dashboard": "Dashboard"
+    "dashboard": "Dashboard",
+    "warningCount": "Warning count",
+    "date": "Date",
+    "warningCountChartTitle": "Warning count since last week"
   },
   "dialog": {
     "confirmContent": "Are you sure you want to do this action?",
@@ -51,6 +55,7 @@
     "createNewUser": "Create new user",
     "driver": "Driver",
     "name": "Full Name",
+    "viewProfile": "View profile",
     "firstName": "First name",
     "lastName": "Last name",
     "patronymic": "Patronymic",
@@ -67,6 +72,14 @@
     "deleteUser": "Delete user",
     "specifyManager": "Please, specify manager",
     "userType": "User type",
-    "manager": "Manager"
+    "manager": "Manager",
+    "device": "Device",
+    "devices": "Devices",
+    "removeDevice": "Remove device",
+    "deviceId": "Device ID",
+    "deviceName": "Device name",
+    "deviceAlreadyExists": "Device with the same id already exists",
+    "unknownDriver": "Unknown driver",
+    "registerDevice": "Register new device"
   }
 }

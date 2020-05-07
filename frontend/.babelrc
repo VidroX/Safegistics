@@ -1,13 +1,34 @@
 {
-  "presets": ["next/babel"],
+  "presets": [
+    [
+      "next/babel",
+      {
+        "preset-env": {
+          "useBuiltIns": "usage",
+          "corejs": 3,
+          "targets": "last 1 version,> 1%,maintained node versions,not dead"
+        }
+      }
+    ]
+  ],
   "plugins": [
     [
-      "import",
+      "babel-plugin-import",
       {
-        "libraryName": "antd",
-        "style": true
+        "libraryName": "@material-ui/core",
+        "libraryDirectory": "esm",
+        "camel2DashComponentName": false
       },
-      "import-antd"
+      "core"
+    ],
+    [
+      "babel-plugin-import",
+      {
+        "libraryName": "@material-ui/icons",
+        "libraryDirectory": "esm",
+        "camel2DashComponentName": false
+      },
+      "icons"
     ],
     "graphql-tag"
   ]

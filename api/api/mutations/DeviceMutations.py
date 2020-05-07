@@ -98,7 +98,8 @@ class RemoveDevice(graphene.Mutation):
 
         if device_id is not None:
             try:
-                device = DeviceModel.objects.get(device_id=device_id)
+                device_id = from_global_id(device_id)[1]
+                device = DeviceModel.objects.get(id=device_id)
                 device.delete()
 
                 message = STATUS_CODE[201]

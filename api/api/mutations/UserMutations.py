@@ -8,6 +8,7 @@ from binascii import Error
 from passlib.hash import argon2
 from api.decoratos.AuthDecorator import admin_status_required, user_integrity_check
 from api.models.BaseUser import BaseUser
+from api.models.User import User
 from api.mutations.types.AuthTypes import LoginInputData, TokenData, get_type_by_obj, RegisterInputData, USER_TYPES, \
     UserUpdateInputData
 from api.statuses import STATUS_CODE
@@ -167,7 +168,13 @@ class UpdateUser(graphene.Mutation):
             raise GraphQLError(STATUS_CODE[104], extensions={'code': 104})
 
         current_user = BaseUserModel.objects(id=user_id).first()
-        is_staff = current_user['is_staff'] or False
+
+        try:
+            is_staff = current_user['is_staff']
+        except IndexError:
+            is_staff = False
+        except KeyError:
+            is_staff = False
 
         user_to_change = None
         if user_update_id is not None:
@@ -194,6 +201,15 @@ class UpdateUser(graphene.Mutation):
             if is_staff is None or not is_staff:
                 raise GraphQLError(STATUS_CODE[2], extensions={'code': 2})
 
+        manager = filtered_user_data.get('set__manager', None)
+        if manager is not None:
+            if is_staff is None or not is_staff:
+                raise GraphQLError(STATUS_CODE[2], extensions={'code': 2})
+
+            manager_id = from_global_id(manager)[1]
+            manager_instance = UserModel.objects(id=manager_id).first()
+            filtered_user_data['set__manager'] = manager_instance
+
         email = filtered_user_data.get('set__email', None)
         mobile_phone = filtered_user_data.get('set__mobile_phone', None)
         if email is not None:
@@ -217,9 +233,19 @@ class UpdateUser(graphene.Mutation):
             raise GraphQLError(STATUS_CODE[102], extensions={'code': 102})
 
         if user_to_change is not None and hasattr(user_to_change, 'is_staff'):
-            is_staff = user_to_change['is_staff'] or False
+            try:
+                is_staff = user_to_change['is_staff']
+            except IndexError:
+                is_staff = False
+            except KeyError:
+                is_staff = False
         elif current_user is not None and hasattr(current_user, 'is_staff'):
-            is_staff = current_user['is_staff'] or False
+            try:
+                is_staff = current_user['is_staff']
+            except IndexError:
+                is_staff = False
+            except KeyError:
+                is_staff = False
         else:
             is_staff = False
 

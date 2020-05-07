@@ -22,9 +22,9 @@ import {KeyboardDatePicker} from "@material-ui/pickers";
 import {BsFillCalendarFill} from "react-icons/bs";
 import {MaterialUiPickersDate} from "@material-ui/pickers/typings/date";
 import PhoneMask from "../phoneMask";
-import {makeStyles} from "@material-ui/styles";
-import UserSearcher from "../searchers/userSearcher";
+import { makeStyles } from '@material-ui/core/styles';
 import LoadingSubmitButton from "../loadingSubmitButton";
+import ManagerSearcher from "../searchers/managerSearcher";
 
 interface AddUserDialogProps {
     open: boolean;
@@ -291,26 +291,26 @@ const AddUserDialog = (props: AddUserDialogProps) => {
             setPassword({
                 error: true,
                 errorText: t('auth.smallPassword'),
-                value: emailField.value
+                value: password.value
             });
         }
         if (repeatPassword.value.length < 6) {
             setRepeatPassword({
                 error: true,
                 errorText: t('auth.smallPassword'),
-                value: emailField.value
+                value: repeatPassword.value
             });
         }
         if (repeatPassword.value !== password.value) {
             setPassword({
                 error: true,
                 errorText: t('auth.passwordsNotMatch'),
-                value: emailField.value
+                value: password.value
             });
             setRepeatPassword({
                 error: true,
                 errorText: t('auth.passwordsNotMatch'),
-                value: emailField.value
+                value: repeatPassword.value
             });
         }
         if (mobilePhone.value.length < 13) {
@@ -458,10 +458,9 @@ const AddUserDialog = (props: AddUserDialogProps) => {
                             <MenuItem value={UserTypes.DRIVER}>{t('users.driver')}</MenuItem>
                         </Select>
                     </FormControl>
-                    <UserSearcher
+                    <ManagerSearcher
                         className={type.type === UserTypes.DRIVER ? classes.visible : classes.notVisible}
                         required={type.type === UserTypes.DRIVER}
-                        title={t('users.manager')}
                         error={manager.error}
                         helperText={manager.errorText}
                         onSelect={value => {

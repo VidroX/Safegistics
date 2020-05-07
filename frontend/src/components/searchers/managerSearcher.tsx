@@ -4,21 +4,34 @@ import { makeStyles } from '@material-ui/core/styles';
 import {CircularProgress, TextField, Theme} from "@material-ui/core";
 import {useTranslation} from "../../i18n";
 import {useQuery} from "@apollo/react-hooks";
-import {UserData, UserEdge} from "../../interfaces/user";
-import {GET_USERS} from "../../apollo/queries/user";
+import {UserEdge} from "../../interfaces/user";
+import {GET_MANAGERS} from "../../apollo/queries/user";
 import clsx from "clsx";
 import {OptionType} from "../../interfaces/searchers";
 
-interface UserSearcherProps {
+interface ManagerSearcherProps {
     error?: boolean;
     helperText?: string;
     onSelect?(value: OptionType): void;
     title?: string;
     className?: string;
     required?: boolean;
+    defaultValue?: OptionType | null;
 }
 
-const UserSearcher = (props: UserSearcherProps) => {
+interface ManagerData {
+    users: {
+        __typename: string;
+        totalCount: number;
+        edges: UserEdge[];
+        pageInfo: {
+            endCursor: string;
+            hasNextPage: boolean;
+        }
+    };
+}
+
+const ManagerSearcher = (props: ManagerSearcherProps) => {
     const { t } = useTranslation();
 
     const {
@@ -26,13 +39,14 @@ const UserSearcher = (props: UserSearcherProps) => {
         error,
         helperText,
         className,
-        title = t('users.user'),
-        required = false
+        title = t('users.manager'),
+        required = false,
+        defaultValue = null
     } = props;
 
     const classes = useStyles();
 
-    const { data, loading, error: queryError, refetch } = useQuery<UserData>(GET_USERS, {
+    const { data, loading, error: queryError, refetch } = useQuery<ManagerData>(GET_MANAGERS, {
         variables: {
             orderBy: "-_cls",
             rowsPerPage: 5
@@ -45,7 +59,7 @@ const UserSearcher = (props: UserSearcherProps) => {
 
     React.useEffect(() => {
         if (!loading && !queryError && data != null) {
-            setSuggestions(data.allUsers.edges.map((obj: UserEdge) => {
+            setSuggestions(data.users.edges.map((obj: UserEdge) => {
                 return {
                     id: obj.node.id,
                     label: obj.node.firstName + ' ' + obj.node.lastName + ' ' + obj.node.patronymic
@@ -64,11 +78,11 @@ const UserSearcher = (props: UserSearcherProps) => {
             onClose={() => {
                 setOpen(false);
             }}
+            value={defaultValue}
             getOptionLabel={option => option != null && option.label != null ? option.label : ""}
             options={suggestions}
             loading={loading}
             freeSolo={true}
-            getOptionSelected={(option, value) => value.id === option.id}
             onChange={(event: object, value: OptionType | null) => {
                 if (value != null) {
                     if(onSelect != null) {
@@ -82,6 +96,7 @@ const UserSearcher = (props: UserSearcherProps) => {
                     });
                 }
             }}
+            getOptionSelected={(option, value) => value.id === option.id}
             onInputChange={(event: object, value: string) => {
                 if(value != null && value.length <= 0) {
                     setValue({
@@ -142,4 +157,4 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 
-export default UserSearcher;
+export default ManagerSearcher;

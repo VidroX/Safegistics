@@ -4,12 +4,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import {CircularProgress, TextField, Theme} from "@material-ui/core";
 import {useTranslation} from "../../i18n";
 import {useQuery} from "@apollo/react-hooks";
-import {UserData, UserEdge} from "../../interfaces/user";
-import {GET_USERS} from "../../apollo/queries/user";
+import { UserEdge} from "../../interfaces/user";
+import {GET_DRIVERS} from "../../apollo/queries/user";
 import clsx from "clsx";
 import {OptionType} from "../../interfaces/searchers";
 
-interface UserSearcherProps {
+interface DriverSearcherProps {
     error?: boolean;
     helperText?: string;
     onSelect?(value: OptionType): void;
@@ -18,7 +18,19 @@ interface UserSearcherProps {
     required?: boolean;
 }
 
-const UserSearcher = (props: UserSearcherProps) => {
+interface DriverData {
+    drivers: {
+        __typename: string;
+        totalCount: number;
+        edges: UserEdge[];
+        pageInfo: {
+            endCursor: string;
+            hasNextPage: boolean;
+        }
+    };
+}
+
+const DriverSearcher = (props: DriverSearcherProps) => {
     const { t } = useTranslation();
 
     const {
@@ -26,13 +38,13 @@ const UserSearcher = (props: UserSearcherProps) => {
         error,
         helperText,
         className,
-        title = t('users.user'),
+        title = t('users.driver'),
         required = false
     } = props;
 
     const classes = useStyles();
 
-    const { data, loading, error: queryError, refetch } = useQuery<UserData>(GET_USERS, {
+    const { data, loading, error: queryError, refetch } = useQuery<DriverData>(GET_DRIVERS, {
         variables: {
             orderBy: "-_cls",
             rowsPerPage: 5
@@ -45,7 +57,7 @@ const UserSearcher = (props: UserSearcherProps) => {
 
     React.useEffect(() => {
         if (!loading && !queryError && data != null) {
-            setSuggestions(data.allUsers.edges.map((obj: UserEdge) => {
+            setSuggestions(data.drivers.edges.map((obj: UserEdge) => {
                 return {
                     id: obj.node.id,
                     label: obj.node.firstName + ' ' + obj.node.lastName + ' ' + obj.node.patronymic
@@ -142,4 +154,4 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 
-export default UserSearcher;
+export default DriverSearcher;

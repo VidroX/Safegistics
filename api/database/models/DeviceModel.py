@@ -1,3 +1,4 @@
+from mongoengine import NULLIFY
 from mongoengine.fields import StringField, ReferenceField
 from passlib.hash import argon2
 from database.database import db
@@ -7,7 +8,7 @@ from database.models.DriverModel import DriverModel
 class DeviceModel(db.Document):
     meta = {"collection": "devices"}
 
-    driver = ReferenceField(DriverModel, null=True)
+    driver = ReferenceField(DriverModel, null=True, reverse_delete_rule=NULLIFY)
     name = StringField(max_length=255, required=True)
     device_id = StringField(max_length=255, required=True, unique=True)
     device_pass = StringField(max_length=128, required=True)

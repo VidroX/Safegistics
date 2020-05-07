@@ -64,3 +64,4 @@ class UserUpdateInputData(graphene.InputObjectType):
     birthday = graphene.Date(required=False)
     is_staff = graphene.Boolean(required=False)
     is_active = graphene.Boolean(required=False)
+    manager = graphene.ID(required=False)

@@ -1,7 +1,7 @@
 import * as React from "react";
-import {useTranslation} from "../i18n";
+import {useTranslation, Router} from "../i18n";
 import clsx from "clsx";
-import {makeStyles} from "@material-ui/core/styles";
+import { makeStyles } from '@material-ui/core/styles';
 import MaterialSwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
@@ -101,6 +101,25 @@ const Header = () => {
         );
     };
 
+    const viewProfile = () => {
+        const url = {
+            pathname: '/users/[slug]',
+            query: {
+                slug: user?.id
+            },
+        };
+
+        const as = url.pathname.replace(/\[(.*?)]/gmi,
+            (fullMatch: string, group: string) => {
+                if (url.query != null) {
+                    return (url.query as any)[group];
+                }
+                return fullMatch;
+            });
+
+        Router.push(url, as);
+    };
+
     return (
         <>
             <AppBar
@@ -161,6 +180,7 @@ const Header = () => {
                                         {user != null && user.lastName} {user != null && user.firstName}
                                     </Typography>
                                 </MenuItem>
+                                <MenuItem onClick={viewProfile}>{t('users.viewProfile')}</MenuItem>
                                 <MenuItem onClick={handleLogout}>{t('auth.signOut')}</MenuItem>
                             </Menu>
                         </div>
@@ -202,7 +222,7 @@ const Header = () => {
     );
 };
 
-const drawerWidth = 240;
+const drawerWidth = 260;
 const closedDrawerWidth = 10;
 
 const useStyles = makeStyles((theme) => ({

@@ -1,3 +1,6 @@
+import "core-js/stable";
+import "regenerator-runtime/runtime";
+
 import express from 'express';
 import next from 'next';
 import nextI18NextMiddleware from 'next-i18next/middleware';

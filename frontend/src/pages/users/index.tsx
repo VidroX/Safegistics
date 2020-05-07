@@ -8,14 +8,14 @@ import {ButtonData, HeaderData, RowData, TableData} from "../../interfaces/mater
 import {getParsedUserType, UserTypes} from "../../utils/userUtils";
 import { MdClose, MdVerifiedUser } from "react-icons/md";
 import {localizedFormat} from "../../utils/dateUtils";
-import {makeStyles} from "@material-ui/core/styles";
-import {GET_USERS, USER_DELETE, USER_REGISTER} from "../../apollo/queries/user";
+import { makeStyles } from '@material-ui/core/styles';
+import {GET_USERS, USER_DELETE} from "../../apollo/queries/user";
 import {UserData} from "../../interfaces/user";
 import {useContext} from "react";
 import TopNav from "../../contexts/TopNav";
 import useUser from "../../hooks/useUser";
 import { GiTruck } from "react-icons/gi";
-import { FaUser } from "react-icons/fa";
+import { RiUser2Line } from "react-icons/ri";
 import ConfirmationDialog, {CONFIRMATION_ACTIONS} from "../../components/dialogs/confirmationDialog";
 import AddUserDialog from "../../components/dialogs/addUserDialog";
 
@@ -135,7 +135,7 @@ const Users = () => {
                             <span className={classes.userType}>
                                 {parsedUserType === UserTypes.DRIVER ?
                                     <GiTruck className={classes.iconWithText} /> :
-                                    <FaUser className={classes.iconWithText} />
+                                    <RiUser2Line className={classes.iconWithText} />
                                 }
                                 {userType}
                             </span>

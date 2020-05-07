@@ -1,5 +1,4 @@
 import {gql} from "apollo-boost";
-import exp from "constants";
 
 export const GET_USERS = gql`
     query allUsers($rowsPerPage: Int, $cursor: String, $orderBy: String, $userId: ID, $search: String){
@@ -17,7 +16,88 @@ export const GET_USERS = gql`
                     birthday,
                     dateJoined,
                     isStaff,
+                    isActive,
+                    manager {
+                        id,
+                        type: Cls,
+                        email,
+                        mobilePhone,
+                        firstName,
+                        lastName,
+                        patronymic,
+                        birthday,
+                        dateJoined,
+                        isStaff,
+                        isActive
+                    }
+                }
+                cursor
+            }
+            pageInfo {
+                endCursor
+                hasNextPage
+            }
+        }
+    }
+`;
+
+export const GET_MANAGERS = gql`
+    query users($rowsPerPage: Int, $cursor: String, $orderBy: String, $userId: ID, $search: String){
+        users (first: $rowsPerPage, after: $cursor, orderBy: $orderBy, userId: $userId, search: $search) {
+            totalCount
+            edges {
+                node {
+                    id,
+                    type: Cls,
+                    email,
+                    mobilePhone,
+                    firstName,
+                    lastName,
+                    patronymic,
+                    birthday,
+                    dateJoined,
+                    isStaff,
                     isActive
+                }
+                cursor
+            }
+            pageInfo {
+                endCursor
+                hasNextPage
+            }
+        }
+    }
+`;
+
+export const GET_DRIVERS = gql`
+    query drivers($rowsPerPage: Int, $cursor: String, $orderBy: String, $userId: ID, $search: String){
+        drivers (first: $rowsPerPage, after: $cursor, orderBy: $orderBy, userId: $userId, search: $search) {
+            totalCount
+            edges {
+                node {
+                    id,
+                    type: Cls,
+                    email,
+                    mobilePhone,
+                    firstName,
+                    lastName,
+                    patronymic,
+                    birthday,
+                    dateJoined,
+                    isActive,
+                    manager {
+                        id,
+                        type: Cls,
+                        email,
+                        mobilePhone,
+                        firstName,
+                        lastName,
+                        patronymic,
+                        birthday,
+                        dateJoined,
+                        isStaff,
+                        isActive
+                    }
                 }
                 cursor
             }
@@ -125,7 +205,7 @@ export const USER_LOGIN = gql`
 
 export const UPDATE_USER = gql`
     mutation updateUser ($updateUserId: ID, $email: String, $password: String, $firstName: String, $lastName: String, $patronymic: String,
-        $mobilePhone: String, $birthday: Date, $type: String, $isStaff: Boolean, $isActive: Boolean){
+        $mobilePhone: String, $birthday: Date, $type: String, $isStaff: Boolean, $isActive: Boolean, $manager: ID){
         updateUser(
             userUpdateId: $updateUserId,
             userData: {
@@ -138,7 +218,8 @@ export const UPDATE_USER = gql`
                 birthday: $birthday,
                 type: $type, 
                 isStaff: $isStaff,
-                isActive: $isActive
+                isActive: $isActive,
+                manager: $manager
             }
         ) {
             user {
