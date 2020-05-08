@@ -73,7 +73,7 @@ const Users = () => {
                 }
             ] : null
         });
-    }, [user]);
+    }, [user, i18n.language]);
 
     React.useEffect(() => {
         if (!deleteLoading && !deleteError && deleteData != null) {

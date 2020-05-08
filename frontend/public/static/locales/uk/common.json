@@ -42,7 +42,8 @@
     "dashboard": "Панель інформації",
     "warningCount": "Кількість попереджень",
     "date": "Дата",
-    "warningCountChartTitle": "Кількість попереджень з минулого тижня"
+    "warningCountChartTitle": "Кількість попереджень за минулий тиждень",
+    "amountOfRegisteredUsers": "Зареєстровані користувачі"
   },
   "dialog": {
     "confirmContent": "Ви впевнені, що хочете зробити цe?",
@@ -81,5 +82,19 @@
     "deviceAlreadyExists": "Пристрій з таким же ідентифікатором вже існує",
     "unknownDriver": "Невідомий водій",
     "registerDevice": "Зареєструвати новий пристрій"
+  },
+  "warnings": {
+    "title": "Попередження",
+    "type": "Тип",
+    "severity": "Серйозність",
+    "deviceId": "Ідентифікатор пристрою",
+    "driverName": "ПІБ водія",
+    "severe": "Тяжка",
+    "moderate": "Середня",
+    "sleeping": "Водій спить",
+    "other": "Інший",
+    "dateIssued": "Дата виникнення",
+    "noDriverDevice": "Пристрій не зареєстрований за водієм",
+    "noDevice": "Попередження не зареєстровано за пристроєм"
   }
 }

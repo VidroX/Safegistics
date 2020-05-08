@@ -42,7 +42,8 @@
     "dashboard": "Dashboard",
     "warningCount": "Warning count",
     "date": "Date",
-    "warningCountChartTitle": "Warning count since last week"
+    "warningCountChartTitle": "Warning count since last week",
+    "amountOfRegisteredUsers": "Registered users"
   },
   "dialog": {
     "confirmContent": "Are you sure you want to do this action?",
@@ -81,5 +82,19 @@
     "deviceAlreadyExists": "Device with the same id already exists",
     "unknownDriver": "Unknown driver",
     "registerDevice": "Register new device"
+  },
+  "warnings": {
+    "title": "Warnings",
+    "type": "Type",
+    "severity": "Severity",
+    "deviceId": "Device ID",
+    "driverName": "Driver name",
+    "severe": "Severe",
+    "moderate": "Moderate",
+    "sleeping": "Driver sleeping",
+    "other": "Other",
+    "dateIssued": "Date issued",
+    "noDriverDevice": "Device is not bound to any driver",
+    "noDevice": "Warning is not bound to any device"
   }
 }

@@ -35,7 +35,7 @@ const UserPage: NextPage<UserPageProps> = (props) => {
     const classes = useStyles();
 
     const { slug } = props;
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const { setCurrentTopNav } = useContext(TopNav);
 
     const [removeDeviceOpen, setRemoveDeviceOpen] = React.useState(false);
@@ -154,7 +154,7 @@ const UserPage: NextPage<UserPageProps> = (props) => {
         }
 
         setCurrentTopNav(topNav);
-    }, [loading, error, slug, user, registerDialogOpen]);
+    }, [loading, error, slug, user, registerDialogOpen, i18n.language]);
 
     useTitle(t("users.information"));
 

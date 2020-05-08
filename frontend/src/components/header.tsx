@@ -24,7 +24,7 @@ import { MdAccountCircle } from "react-icons/md";
 import useUser from "../hooks/useUser";
 import {config} from "../../config";
 import Cookies from "js-cookie";
-
+import { TiWarningOutline } from "react-icons/ti";
 
 const Header = () => {
     const {t, i18n} = useTranslation();
@@ -97,6 +97,18 @@ const Header = () => {
                         <ListItemText>{t('users.users')}</ListItemText>
                     </ListItem>
                 </Link> }
+                <Link href="/warnings/" passHref noDecoration={true}>
+                    <ListItem
+                        selected={router.pathname === '/warnings' || router.pathname === '/warnings/'}
+                        button
+                        className={classes.drawerItem}
+                        color="secondary"
+                        onClick={isMobile ? toggleDrawer : () => {}}
+                    >
+                        <ListItemIcon><TiWarningOutline color={theme.palette.secondary.light} /></ListItemIcon>
+                        <ListItemText>{t('warnings.title')}</ListItemText>
+                    </ListItem>
+                </Link>
             </List>
         );
     };

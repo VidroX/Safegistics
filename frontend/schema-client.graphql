@@ -35,7 +35,7 @@ type ApiQuery {
     "The ID of the object"
     node(id: ID!): Node
     users(Cls: String, after: String, before: String, birthday: DateTime, dateJoined: DateTime, email: String, first: Int, firstName: String, id: ID, isActive: Boolean, isStaff: Boolean, last: Int, lastName: String, mobilePhone: String, orderBy: String, patronymic: String, search: String, userId: ID): UserConnection
-    warnings(after: String, before: String, dateIssued: DateTime, device: ID, deviceId: ID, first: Int, id: ID, last: Int, orderBy: String, type: String): WarningGraphModelConnection
+    warnings(after: String, before: String, dateIssued: DateTime, device: ID, deviceId: ID, first: Int, fromDate: Date, id: ID, last: Int, orderBy: String, toDate: Date, type: String): WarningGraphModelConnection
 }
 
 type BaseUser implements Node {

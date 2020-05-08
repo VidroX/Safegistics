@@ -197,7 +197,8 @@ const UserEdit: NextPage<UserEditProps> = (props) => {
 
         setCurrentTopNav(topNav);
     }, [loading, error, slug, updateLoading, isActive, isUserAdmin, encodedBirthday, encodedEmailField,
-        encodedFirstName, encodedLastName, encodedMobilePhone, encodedPatronymic, encodedManager, currentUser]);
+        encodedFirstName, encodedLastName, encodedMobilePhone, encodedPatronymic, encodedManager, currentUser,
+        i18n.language]);
 
     const isStaffChecked = Boolean(isUserAdmin);
     const isActiveChecked = Boolean(isActive);

@@ -6,7 +6,16 @@ from database.models.DriverModel import DriverModel
 
 
 class DeviceModel(db.Document):
-    meta = {"collection": "devices"}
+    meta = {
+        "collection": "devices",
+        'indexes': [
+            {
+                'fields': ['$name', "$device_id"],
+                'default_language': 'english',
+                'weights': {'name': 10, 'device_id': 5}
+            }
+        ]
+    }
 
     driver = ReferenceField(DriverModel, null=True, reverse_delete_rule=NULLIFY)
     name = StringField(max_length=255, required=True)
