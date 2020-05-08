@@ -1,0 +1,140 @@
+query allUsers($rowsPerPage: Int, $cursor: String, $orderBy: String, $userId: ID, $search: String){
+    allUsers (first: $rowsPerPage, after: $cursor, orderBy: $orderBy, userId: $userId, search: $search) {
+        totalCount
+        edges {
+            node {
+                id,
+                Cls,
+                email,
+                mobilePhone,
+                firstName,
+                lastName,
+                patronymic,
+                birthday,
+                dateJoined,
+                isStaff,
+                isActive,
+                manager {
+                    id,
+                    Cls,
+                    email,
+                    mobilePhone,
+                    firstName,
+                    lastName,
+                    patronymic,
+                    birthday,
+                    dateJoined,
+                    isStaff,
+                    isActive
+                }
+            }
+            cursor
+        }
+        pageInfo {
+            endCursor
+            hasNextPage
+        }
+    }
+}
+
+query managers($rowsPerPage: Int, $cursor: String, $orderBy: String, $userId: ID, $search: String){
+    users (first: $rowsPerPage, after: $cursor, orderBy: $orderBy, userId: $userId, search: $search) {
+        totalCount
+        edges {
+            node {
+                id,
+                Cls,
+                email,
+                mobilePhone,
+                firstName,
+                lastName,
+                patronymic,
+                birthday,
+                dateJoined,
+                isStaff,
+                isActive
+            }
+            cursor
+        }
+        pageInfo {
+            endCursor
+            hasNextPage
+        }
+    }
+}
+
+query drivers($rowsPerPage: Int, $cursor: String, $orderBy: String, $userId: ID, $search: String){
+    drivers (first: $rowsPerPage, after: $cursor, orderBy: $orderBy, userId: $userId, search: $search) {
+        totalCount
+        edges {
+            node {
+                id,
+                Cls,
+                email,
+                mobilePhone,
+                firstName,
+                lastName,
+                patronymic,
+                birthday,
+                dateJoined,
+                isActive,
+                manager {
+                    id,
+                    Cls,
+                    email,
+                    mobilePhone,
+                    firstName,
+                    lastName,
+                    patronymic,
+                    birthday,
+                    dateJoined,
+                    isStaff,
+                    isActive
+                }
+            }
+            cursor
+        }
+        pageInfo {
+            endCursor
+            hasNextPage
+        }
+    }
+}
+
+query currentUser {
+    currentUser {
+        edges {
+            node {
+                id,
+                email,
+                mobilePhone,
+                firstName,
+                lastName,
+                patronymic,
+                birthday,
+                dateJoined,
+                isStaff,
+                isActive
+            }
+        }
+    }
+}
+
+mutation login ($email: String!, $password: String!){
+    login(loginData: {email: $email, password: $password}) {
+        user {
+            email,
+            mobilePhone,
+            firstName,
+            lastName,
+            patronymic,
+            birthday,
+            dateJoined,
+            isActive,
+            isStaff
+        },
+        token {
+            accessToken
+        }
+    }
+}

@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name" translatable="false">Safegistics</string>
+    <string name="log_into_safegistics">Log into Safegistics</string>
+    <string name="statistics">Statistics</string>
+    <string name="warnings">Warnings</string>
+    <string name="login">Login</string>
+    <string name="email" translatable="false">E-Mail</string>
+    <string name="password">Password</string>
+</resources>

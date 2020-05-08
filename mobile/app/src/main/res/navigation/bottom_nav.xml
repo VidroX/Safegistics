@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottom_nav"
+    app:startDestination="@id/statistics_fragment">
+
+    <keep_state_fragment
+        android:id="@+id/statistics_fragment"
+        android:name="me.vidrox.safegistics.ui.statistics.StatisticsFragment"
+        android:label="@string/statistics"
+        tools:layout="@layout/statistics_fragment" />
+    <keep_state_fragment
+        android:id="@+id/warnings_fragment"
+        android:name="me.vidrox.safegistics.ui.warnings.WarningsFragment"
+        android:label="@string/warnings"
+        tools:layout="@layout/warnings_fragment" />
+
+</navigation>

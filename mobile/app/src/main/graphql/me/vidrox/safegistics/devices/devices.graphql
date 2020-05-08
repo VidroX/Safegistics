@@ -1,0 +1,23 @@
+query devices($userId: ID){
+    devices(userId: $userId) {
+        totalCount,
+        edges {
+            node {
+                id,
+                driver {
+                    id,
+                    firstName,
+                    lastName,
+                    patronymic
+                },
+                name,
+                deviceId
+            }
+            cursor
+        },
+        pageInfo {
+            endCursor
+            hasNextPage
+        }
+    }
+}

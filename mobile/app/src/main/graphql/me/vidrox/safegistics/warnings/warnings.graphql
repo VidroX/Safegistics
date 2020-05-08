@@ -1,0 +1,35 @@
+query warnings($rowsPerPage: Int, $cursor: String, $orderBy: String, $fromDate: Date, $toDate: Date, $device: ID){
+    warnings (
+        first: $rowsPerPage,
+        after: $cursor,
+        orderBy: $orderBy,
+        fromDate: $fromDate,
+        toDate: $toDate,
+        device: $device
+    ) {
+        totalCount
+        edges {
+            node {
+                device {
+                    id,
+                    name,
+                    deviceId,
+                    driver {
+                        id,
+                        firstName,
+                        lastName,
+                        patronymic
+                    }
+                }
+                id,
+                type,
+                dateIssued
+            }
+            cursor
+        }
+        pageInfo {
+            endCursor
+            hasNextPage
+        }
+    }
+}
