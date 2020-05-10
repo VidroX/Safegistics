@@ -8,4 +8,6 @@
     <string name="incorrect_credentials">E-Mail або пароль невірний</string>
     <string name="field_empty">Поле не може бути порожнім</string>
     <string name="internal_error">Під час обробки вашого запиту сталася помилка</string>
+    <string name="user">Користувач</string>
+    <string name="logout">Вийти</string>
 </resources>

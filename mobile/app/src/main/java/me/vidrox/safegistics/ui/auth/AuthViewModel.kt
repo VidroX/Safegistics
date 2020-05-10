@@ -2,8 +2,10 @@ package me.vidrox.safegistics.ui.auth
 
 import android.view.View
 import androidx.lifecycle.ViewModel
+import com.apollographql.apollo.exception.ApolloNetworkException
 import me.vidrox.safegistics.apollo.repositories.AuthRepository
 import me.vidrox.safegistics.exceptions.ApiExceptions
+import me.vidrox.safegistics.exceptions.ExceptionWithCode
 import me.vidrox.safegistics.listeners.RequestListener
 import me.vidrox.safegistics.users.LoginMutation
 import me.vidrox.safegistics.utils.Coroutines
@@ -27,6 +29,8 @@ class AuthViewModel : ViewModel() {
                 return@mainThread
             } catch (e: ApiExceptions) {
                 authListener?.onError(e.exceptions)
+            } catch (e: ApolloNetworkException) {
+                authListener?.onError(listOf(), "Cannot connect to the server")
             }
         }
     }

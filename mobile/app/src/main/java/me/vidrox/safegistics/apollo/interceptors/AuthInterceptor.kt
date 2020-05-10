@@ -10,12 +10,13 @@ class AuthInterceptor @Inject constructor(
     var user: User
 ): Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
+
         var newRequest: Request = chain.request()
 
         newRequest = newRequest.newBuilder()
             .addHeader(
                 "Authorization",
-                "Bearer " + if (user.token.isNullOrEmpty()) "" else user.token!!
+                "Bearer ${user.token}"
             )
             .build()
 

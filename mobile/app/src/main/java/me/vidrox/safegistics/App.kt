@@ -1,6 +1,7 @@
 package me.vidrox.safegistics
 
 import android.app.Application
+import me.vidrox.safegistics.apollo.entities.User
 import me.vidrox.safegistics.dagger.components.AppComponent
 import me.vidrox.safegistics.dagger.components.DaggerAppComponent
 import me.vidrox.safegistics.dagger.modules.AppModule
@@ -13,6 +14,7 @@ class App: Application() {
 
     override fun onCreate() {
         super.onCreate()
+        User.clear(applicationContext)
         appComponent = initDagger()
     }
 

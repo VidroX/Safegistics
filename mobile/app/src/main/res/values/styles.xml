@@ -10,12 +10,19 @@
         <item name="colorControlNormal">@color/textColor</item>
         <item name="colorControlActivated">@color/colorAccent</item>
         <item name="colorControlHighlight">@color/colorAccent</item>
+        <item name="textInputStyle">@style/TextInputLayout</item>
+        <item name="android:textCursorDrawable">@drawable/cursor_color</item>
+    </style>
+
+    <style name="Overlay" parent="ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox">
+        <item name="colorControlActivated">@color/colorAccent</item>
     </style>
 
     <style name="TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="android:textColorHint">@color/lightTextColor</item>
         <item name="hintTextColor">@color/colorAccent</item>
         <item name="boxStrokeColor">@color/colorAccent</item>
+        <item name="materialThemeOverlay">@style/Overlay</item>
     </style>
 
 </resources>

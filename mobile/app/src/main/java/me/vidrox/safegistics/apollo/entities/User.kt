@@ -10,7 +10,9 @@ import javax.inject.Inject
 
 @JsonClass(generateAdapter = true)
 data class UserData(
+    var id: String,
     var __typename: String,
+    var Cls: String,
     var email: String,
     var mobilePhone: String,
     var firstName: String,
@@ -67,20 +69,8 @@ class User @Inject constructor(
 
     companion object {
         private val dummyUser = User(
-            UserData(
-                __typename = "",
-                email = "",
-                mobilePhone = "",
-                firstName = "",
-                lastName = "",
-                patronymic = "",
-                birthday = "",
-                dateJoined = "",
-                isActive = false,
-                isStaff = false,
-                manager = null
-            ),
-            ""
+            null,
+            null
         )
 
         fun get(context: Context): User {

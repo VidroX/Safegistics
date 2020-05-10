@@ -9,4 +9,6 @@
     <string name="field_empty">This field cannot be empty</string>
     <string name="incorrect_credentials">E-Mail or Password is incorrect</string>
     <string name="internal_error">An error has occurred while processing your request</string>
+    <string name="user">User</string>
+    <string name="logout">Logout</string>
 </resources>

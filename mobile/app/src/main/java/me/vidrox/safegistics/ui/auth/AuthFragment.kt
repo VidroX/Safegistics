@@ -13,12 +13,14 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import me.vidrox.safegistics.App
+import me.vidrox.safegistics.BuildConfig
 import me.vidrox.safegistics.R
 import me.vidrox.safegistics.apollo.entities.User
 import me.vidrox.safegistics.apollo.entities.UserData
 import me.vidrox.safegistics.databinding.AuthFragmentBinding
 import me.vidrox.safegistics.exceptions.ExceptionWithCode
 import me.vidrox.safegistics.listeners.RequestListener
+import me.vidrox.safegistics.ui.main.MainViewModel
 import me.vidrox.safegistics.users.LoginMutation
 import org.joda.time.LocalDate
 import org.joda.time.LocalDateTime
@@ -38,7 +40,6 @@ class AuthFragment : Fragment(), RequestListener<LoginMutation.Data> {
     private lateinit var dataBinding: AuthFragmentBinding
     private lateinit var progress: LinearLayout
 
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
 
@@ -50,6 +51,8 @@ class AuthFragment : Fragment(), RequestListener<LoginMutation.Data> {
         App.appComponent.inject(this@AuthFragment)
 
         progress = activity?.findViewById(R.id.mainProgressBar) as LinearLayout
+
+        setHasOptionsMenu(true)
 
         (requireActivity() as AppCompatActivity).supportActionBar?.title =
             getString(R.string.log_into_safegistics)
@@ -63,15 +66,23 @@ class AuthFragment : Fragment(), RequestListener<LoginMutation.Data> {
     }
 
     override fun onRequest() {
-        Log.e("AuthFragment", "Request started")
+        if (BuildConfig.DEBUG) {
+            Log.d("AuthFragment", "Request started")
+        }
+
         dataBinding.authBoxEmail.error = null
         dataBinding.authBoxPassword.error = null
         progress.visibility = View.VISIBLE
     }
 
     override fun onSuccess(result: LoginMutation.Data?) {
-        Log.e("AuthFragment", result.toString())
+        if (BuildConfig.DEBUG) {
+            Log.d("AuthFragment", "Request completed without errors")
+            Log.d("AuthFragment", result.toString())
+        }
+
         progress.visibility = View.GONE
+
         val remoteUser = result?.login()
         if (remoteUser != null) {
             val manager = remoteUser.user()?.manager()
@@ -79,6 +90,8 @@ class AuthFragment : Fragment(), RequestListener<LoginMutation.Data> {
             user.token = remoteUser.token()?.accessToken()
             user.userData = UserData(
                 __typename = remoteUser.user()?.__typename()!!,
+                id = remoteUser.user()?.id()!!,
+                Cls = remoteUser.user()?.Cls()!!,
                 email = remoteUser.user()?.email()!!,
                 mobilePhone = remoteUser.user()?.mobilePhone()!!,
                 firstName = remoteUser.user()?.firstName()!!,
@@ -90,6 +103,8 @@ class AuthFragment : Fragment(), RequestListener<LoginMutation.Data> {
                 isStaff = remoteUser.user()?.isStaff,
                 manager = if (manager != null) UserData(
                     __typename = manager.__typename(),
+                    id = manager.id(),
+                    Cls = manager.Cls()!!,
                     email = manager.email()!!,
                     mobilePhone = manager.mobilePhone(),
                     firstName = manager.firstName(),
@@ -106,16 +121,26 @@ class AuthFragment : Fragment(), RequestListener<LoginMutation.Data> {
             user.save(requireContext())
         }
 
+        requireActivity().invalidateOptionsMenu()
+
         val navController = findNavController()
         val direction = AuthFragmentDirections.actionAuthFragmentToMainFragment()
         navController.navigate(direction)
     }
 
-    override fun onError(e: List<ExceptionWithCode>) {
+    override fun onError(e: List<ExceptionWithCode>, message: String) {
         progress.visibility = View.GONE
 
+        if (message.isNotEmpty()) {
+            Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+            return
+        }
+
         e.forEach {
-            Log.e("AuthFragment", "Code: ${it.code}, Message: ${it.message}")
+            if (BuildConfig.DEBUG) {
+                Log.e("AuthFragment", "Code: ${it.code}, Message: ${it.message}")
+            }
+
             when (it.code){
                 100, -1 -> {
                     dataBinding.authBoxEmail.error = getString(R.string.incorrect_credentials)
