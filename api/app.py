@@ -34,7 +34,9 @@ JWTManager(app)
 database.init(app)
 
 app.add_url_rule(
-    "/graphql", view_func=GraphQLView.as_view("graphql", schema=schema.schema, graphiql=DEBUG)
+    "/graphql",
+    view_func=GraphQLView.as_view("graphql", schema=schema.schema, graphiql=DEBUG),
+    strict_slashes=False
 )
 
 if __name__ == '__main__':

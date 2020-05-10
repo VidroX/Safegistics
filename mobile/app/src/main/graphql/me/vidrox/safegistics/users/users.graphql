@@ -131,7 +131,20 @@ mutation login ($email: String!, $password: String!){
             birthday,
             dateJoined,
             isActive,
-            isStaff
+            isStaff,
+			manager {
+                id,
+                Cls,
+                email,
+                mobilePhone,
+                firstName,
+                lastName,
+                patronymic,
+                birthday,
+                dateJoined,
+                isStaff,
+                isActive
+            }
         },
         token {
             accessToken

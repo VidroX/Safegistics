@@ -5,4 +5,7 @@
     <string name="warnings">Попередження</string>
     <string name="login">Увійти</string>
     <string name="password">Пароль</string>
+    <string name="incorrect_credentials">E-Mail або пароль невірний</string>
+    <string name="field_empty">Поле не може бути порожнім</string>
+    <string name="internal_error">Під час обробки вашого запиту сталася помилка</string>
 </resources>
