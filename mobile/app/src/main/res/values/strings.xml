@@ -11,4 +11,22 @@
     <string name="internal_error">An error has occurred while processing your request</string>
     <string name="user">User</string>
     <string name="logout">Logout</string>
+    <string name="server_offline">Cannot connect to the server</string>
+    <string name="sleeping">Driver sleeping</string>
+    <string name="other">Other</string>
+    <string name="date_issued">Date Issued</string>
+    <string name="driver_full_name">Driver full name</string>
+    <string name="severe">Severe</string>
+    <string name="moderate">Moderate</string>
+    <string name="type">Type</string>
+    <string name="device_id">Device ID</string>
+    <string name="no_driver_device">Device is not bound to any driver</string>
+    <string name="no_device">Warning is not bound to any device</string>
+    <string name="warning_info_title">Warning Information</string>
+    <string name="severity">Severity</string>
+    <string name="ok">OK</string>
+    <string name="warning_amount">Warnings amount</string>
+    <string name="users_count">Users count</string>
+    <string name="date">Date</string>
+    <string name="warning_amount_since_last_week">Warning amount since last week</string>
 </resources>

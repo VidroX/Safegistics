@@ -10,4 +10,22 @@
     <string name="internal_error">Під час обробки вашого запиту сталася помилка</string>
     <string name="user">Користувач</string>
     <string name="logout">Вийти</string>
+    <string name="server_offline">Не вдається підключитися до сервера</string>
+    <string name="sleeping">Водій спить</string>
+    <string name="other">Інший</string>
+    <string name="date_issued">Дата виникнення</string>
+    <string name="driver_full_name">ПІБ водія</string>
+    <string name="severe">Тяжка</string>
+    <string name="moderate">Середня</string>
+    <string name="type">Тип</string>
+    <string name="device_id">Ідентифікатор пристрію</string>
+    <string name="no_driver_device">Пристрій не зареєстрований за водієм</string>
+    <string name="no_device">Попередження не зареєстровано за пристроєм</string>
+    <string name="warning_info_title">Інформація про попередження</string>
+    <string name="severity">Тяжкість</string>
+    <string name="ok">Добре</string>
+    <string name="warning_amount">Кількість попереджень</string>
+    <string name="users_count">Кількість користувачів</string>
+    <string name="date">Дата</string>
+    <string name="warning_amount_since_last_week">Кількість попереджень за минулий тиждень</string>
 </resources>

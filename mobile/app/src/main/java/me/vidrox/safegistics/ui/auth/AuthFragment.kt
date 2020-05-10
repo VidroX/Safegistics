@@ -1,15 +1,17 @@
 package me.vidrox.safegistics.ui.auth
 
+import android.app.Activity
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import me.vidrox.safegistics.App
@@ -20,7 +22,6 @@ import me.vidrox.safegistics.apollo.entities.UserData
 import me.vidrox.safegistics.databinding.AuthFragmentBinding
 import me.vidrox.safegistics.exceptions.ExceptionWithCode
 import me.vidrox.safegistics.listeners.RequestListener
-import me.vidrox.safegistics.ui.main.MainViewModel
 import me.vidrox.safegistics.users.LoginMutation
 import org.joda.time.LocalDate
 import org.joda.time.LocalDateTime
@@ -69,6 +70,8 @@ class AuthFragment : Fragment(), RequestListener<LoginMutation.Data> {
         if (BuildConfig.DEBUG) {
             Log.d("AuthFragment", "Request started")
         }
+
+        hideKeyboard()
 
         dataBinding.authBoxEmail.error = null
         dataBinding.authBoxPassword.error = null
@@ -128,13 +131,8 @@ class AuthFragment : Fragment(), RequestListener<LoginMutation.Data> {
         navController.navigate(direction)
     }
 
-    override fun onError(e: List<ExceptionWithCode>, message: String) {
+    override fun onError(e: List<ExceptionWithCode>) {
         progress.visibility = View.GONE
-
-        if (message.isNotEmpty()) {
-            Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
-            return
-        }
 
         e.forEach {
             if (BuildConfig.DEBUG) {
@@ -146,6 +144,19 @@ class AuthFragment : Fragment(), RequestListener<LoginMutation.Data> {
                     dataBinding.authBoxEmail.error = getString(R.string.incorrect_credentials)
                     dataBinding.authBoxPassword.error = getString(R.string.incorrect_credentials)
                 }
+                -2 -> {
+                    dataBinding.authBoxEmail.error = getString(R.string.field_empty)
+                }
+                -3 -> {
+                    dataBinding.authBoxPassword.error = getString(R.string.field_empty)
+                }
+                -4 -> {
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.server_offline),
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
                 else -> {
                     Toast.makeText(
                         requireContext(),
@@ -155,5 +166,17 @@ class AuthFragment : Fragment(), RequestListener<LoginMutation.Data> {
                 }
             }
         }
+    }
+
+    private fun hideKeyboard() {
+        val imm =
+            requireActivity().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+
+        var view = requireActivity().currentFocus
+
+        if (view == null) {
+            view = View(activity)
+        }
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }

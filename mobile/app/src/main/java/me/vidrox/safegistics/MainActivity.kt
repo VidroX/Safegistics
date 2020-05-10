@@ -7,6 +7,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.navigation.findNavController
 import me.vidrox.safegistics.apollo.entities.User
+import me.vidrox.safegistics.ui.auth.AuthFragmentDirections
 import me.vidrox.safegistics.ui.main.MainFragmentDirections
 import javax.inject.Inject
 
@@ -19,6 +20,14 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.main_activity)
 
         App.appComponent.inject(this)
+
+        if (savedInstanceState == null && user.userData != null &&
+            user.token != null && !User.isTokenExpired(user)) {
+
+            val direction = AuthFragmentDirections.actionAuthFragmentToMainFragment()
+            val navController = findNavController(R.id.nav_host_fragment)
+            navController.navigate(direction)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

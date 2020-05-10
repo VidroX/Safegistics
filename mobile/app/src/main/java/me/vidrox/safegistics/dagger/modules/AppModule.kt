@@ -28,7 +28,8 @@ class AppModule(private val app: Application) {
 
     @Provides
     @Singleton
-    fun provideAuthInterceptor(user: User): AuthInterceptor = AuthInterceptor(user)
+    fun provideAuthInterceptor(context: Context, user: User): AuthInterceptor =
+        AuthInterceptor(context, user)
 
     @Provides
     @Singleton

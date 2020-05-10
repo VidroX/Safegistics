@@ -2,10 +2,13 @@ package me.vidrox.safegistics.apollo.entities
 
 import android.content.Context
 import android.util.Log
+import com.auth0.android.jwt.JWT
 import com.squareup.moshi.JsonClass
 import com.squareup.moshi.Moshi
 import me.vidrox.safegistics.Config
 import me.vidrox.safegistics.utils.Crypto
+import org.joda.time.DateTime
+import org.joda.time.LocalDate
 import javax.inject.Inject
 
 @JsonClass(generateAdapter = true)
@@ -128,8 +131,21 @@ class User @Inject constructor(
             return true
         }
 
-        fun isTokenExpired(user: User?): Boolean {
-            return false
+        fun isTokenExpired(user: User): Boolean {
+            if (user.token.isNullOrEmpty()) {
+                return true
+            }
+
+            user.token.let {
+                val jwt = JWT(it!!)
+                val expirationDate = jwt.expiresAt
+
+                if (expirationDate == null || expirationDate.time <= 0) {
+                    return true
+                }
+
+                return DateTime.now().isAfter(expirationDate.time)
+            }
         }
     }
 

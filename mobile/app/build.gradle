@@ -97,6 +97,12 @@ dependencies {
     implementation 'com.squareup.moshi:moshi:1.9.2'
     kapt 'com.squareup.moshi:moshi-kotlin-codegen:1.9.2'
 
+    // Coil
+    implementation "io.coil-kt:coil:0.10.1"
+
+    // MPAndroidChart
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
     compileOnly("org.jetbrains:annotations:13.0")
     testCompileOnly("org.jetbrains:annotations:13.0")
 }

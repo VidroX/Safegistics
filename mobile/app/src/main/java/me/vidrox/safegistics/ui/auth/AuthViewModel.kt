@@ -19,19 +19,34 @@ class AuthViewModel : ViewModel() {
 
     fun onLoginBtnClick(view: View) {
         authListener?.onRequest()
+        val localErrors = arrayListOf<ExceptionWithCode>()
+
+        if (email.isNullOrEmpty()) {
+            localErrors.add(ExceptionWithCode(-2, "This field cannot be empty"))
+        }
+
+        if (password.isNullOrEmpty()) {
+            localErrors.add(ExceptionWithCode(-3, "This field cannot be empty"))
+        }
+
+        if (email.isNullOrEmpty() || password.isNullOrEmpty()) {
+            authListener?.onError(localErrors)
+            return
+        }
 
         Coroutines.mainThread {
             try {
                 val result = authRepository.login(email ?: "", password ?: "")
 
                 authListener?.onSuccess(result)
-
-                return@mainThread
             } catch (e: ApiExceptions) {
                 authListener?.onError(e.exceptions)
             } catch (e: ApolloNetworkException) {
-                authListener?.onError(listOf(), "Cannot connect to the server")
+                localErrors.add(ExceptionWithCode(-4, "Cannot connect to server"))
+                authListener?.onError(localErrors)
             }
+
+            return@mainThread
         }
     }
 }

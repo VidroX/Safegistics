@@ -14,7 +14,6 @@ class App: Application() {
 
     override fun onCreate() {
         super.onCreate()
-        User.clear(applicationContext)
         appComponent = initDagger()
     }
 
