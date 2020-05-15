@@ -23,7 +23,7 @@ const LineChart = ({ data }: LineChartProps) => {
                         data={data}
                         width={width <= 0 ? 0 : width}
                         height={height <= 0 ? 0 : height}
-                        margin={{ top: 16, right: 16, bottom: 48, left: 48 }}
+                        margin={{ top: 32, right: 16, bottom: 48, left: 48 }}
                         xScale={{type: 'point'}}
                         yScale={{type: 'linear', min: 'auto', max: 'auto', stacked: true, reverse: false}}
                         curve="natural"

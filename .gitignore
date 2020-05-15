@@ -145,3 +145,5 @@ certs
 
 iot/user.json
 iot/**/__pycache__
+**/yarn.lock
+mobile/app/release/
